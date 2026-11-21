@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1
+
+- Store listing: fuller description and more search keywords; Q&A now points to GitHub issues.
+
 ## 0.1.0
 
 - Save the current folder or `.code-workspace` as a project; switch with `Cmd+Alt+P` (`Shift+Alt+P` on Windows/Linux).

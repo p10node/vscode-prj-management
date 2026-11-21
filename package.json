@@ -2,7 +2,7 @@
   "name": "p10-project-manager",
   "displayName": "P10 Project Manager",
   "description": "Save, tag, sort and quickly switch between projects from the sidebar, quick pick or status bar. Auto-detects Git repositories. Plain JSON storage, zero dependencies.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "p10node",
   "author": {
     "name": "Lptenoss",
