@@ -1,5 +1,10 @@
 # P10 Project Manager
 
+[![VS Marketplace](https://badgen.net/vs-marketplace/v/p10node.p10-project-manager)](https://marketplace.visualstudio.com/items?itemName=p10node.p10-project-manager)
+[![Open VSX](https://img.shields.io/open-vsx/v/p10node/p10-project-manager?label=Open%20VSX)](https://open-vsx.org/extension/p10node/p10-project-manager)
+[![Publish](https://img.shields.io/github/actions/workflow/status/p10node/vscode-prj-management/publish.yml?label=publish)](https://github.com/p10node/vscode-prj-management/actions/workflows/publish.yml)
+[![License](https://img.shields.io/github/license/p10node/vscode-prj-management)](LICENSE)
+
 Save, tag and switch between projects in VS Code. **Zero runtime dependencies**: written in TypeScript, compiled to plain JavaScript on the Node built-ins that VS Code already ships.
 
 Independent implementation inspired by the idea of "Project Manager" extensions; it shares no code with them.
