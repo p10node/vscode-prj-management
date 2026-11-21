@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <!-- Source of media/icon.png (the Marketplace icon must be a PNG). Re-export at 256x256 after editing. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4F46E5"/>
+      <stop offset="1" stop-color="#0EA5E9"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="56" fill="url(#bg)"/>
+  <g transform="translate(-7 0)">
+    <!-- folder behind: "more projects" -->
+    <path transform="translate(16 -20)" fill="#FFFFFF" fill-opacity="0.38"
+          d="M52 98a16 16 0 0 1 16-16h38l16 16h66a16 16 0 0 1 16 16v66a16 16 0 0 1-16 16H68a16 16 0 0 1-16-16z"/>
+    <!-- front folder -->
+    <path fill="#FFFFFF"
+          d="M52 98a16 16 0 0 1 16-16h38l16 16h66a16 16 0 0 1 16 16v66a16 16 0 0 1-16 16H68a16 16 0 0 1-16-16z"/>
+    <path fill="none" stroke="#4338CA" stroke-width="12" stroke-linecap="round" d="M84 138h88M84 162h54"/>
+  </g>
+</svg>

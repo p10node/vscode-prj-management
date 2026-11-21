@@ -1,0 +1,112 @@
+# Publishes the extension when a version tag is pushed — plain git, no GitHub CLI needed:
+#
+#   1. Bump "version" in package.json and add a "## <version>" section to CHANGELOG.md. Commit.
+#   2. git tag v<version> && git push origin main v<version>
+#
+# The workflow creates the GitHub Release (notes = that CHANGELOG section), attaches the .vsix,
+# then publishes it to both stores.
+#
+# VS Code Marketplace: Trusted Publishing (OIDC), no token. One-time setup on
+#   https://marketplace.visualstudio.com/manage → publisher p10node → Trusted Publishing → Create:
+#     Repository owner  p10node
+#     Repository        vscode-prj-management
+#     Workflow          publish.yml
+#     Environment       (empty)
+# Open VSX: a new extension is published the first time with a token (repository secret OVSX_PAT).
+#   After that, register Trusted Publishing on https://open-vsx.org/user-settings/trusted-publishers
+#   (same owner/repo/workflow, no environment) and delete OVSX_PAT: without the secret the
+#   workflow publishes with --trusted-publishing.
+#
+# vsce and ovsx are pinned here instead of being devDependencies (the project has none at runtime
+# and keeps its dev tools to TypeScript + type definitions).
+
+name: Publish
+
+on:
+  push:
+    tags: ['v*.*.*']
+
+permissions:
+  contents: write # attach the .vsix to the release
+  id-token: write # OIDC token for Marketplace Trusted Publishing
+
+concurrency:
+  group: publish-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.ref_name }}
+      OVSX_PAT: ${{ secrets.OVSX_PAT }}
+      VSCE: '@vscode/vsce@4.1.0'
+      OVSX: 'ovsx@1.3.0'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .tool-versions
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .tool-versions # vsce 4 needs Node >= 22
+
+      - name: Install
+        run: bun install --frozen-lockfile
+
+      - name: Check tag matches package.json
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if [ "${TAG#v}" != "$VERSION" ]; then
+            echo "::error::Release tag $TAG does not match package.json version $VERSION"
+            exit 1
+          fi
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          echo "VSIX=p10-project-manager-$VERSION.vsix" >> "$GITHUB_ENV"
+
+      - name: Type-check and test
+        run: |
+          bun run typecheck
+          bun run test
+
+      - name: Build and package
+        # vsce runs the "vscode:prepublish" script (type-check + bundle) before packaging.
+        run: bunx "$VSCE" package --no-dependencies --out "$VSIX"
+
+      - name: Create the GitHub release with the .vsix (before publishing, so it exists even if a store fails)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          awk -v v="$VERSION" '/^## /{if (p) exit; if ($2 == v) {p = 1; next}} p' CHANGELOG.md > notes.md
+          [ -s notes.md ] || echo "Release $TAG" > notes.md
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            gh release upload "$TAG" "$VSIX" --clobber
+          else
+            gh release create "$TAG" "$VSIX" --title "$TAG" --notes-file notes.md --verify-tag
+          fi
+
+      - name: Publish to VS Code Marketplace (Trusted Publishing)
+        if: github.repository_owner == 'p10node'
+        run: bunx "$VSCE" publish --oidc --no-dependencies --packagePath "$VSIX"
+
+      - name: Publish to Open VSX
+        if: github.repository_owner == 'p10node'
+        run: |
+          FLAGS=""
+          # OVSX_PAT set → token; otherwise Trusted Publishing (fails loudly if not registered).
+          if [ -z "$OVSX_PAT" ]; then FLAGS="$FLAGS --trusted-publishing"; fi
+          bunx "$OVSX" publish "$VSIX" $FLAGS
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "### p10-project-manager ${VERSION:-?}"
+            echo
+            echo "| Target              | Result                                     |"
+            echo "| ------------------- | ------------------------------------------ |"
+            echo "| VS Code Marketplace | see step “Publish to VS Code Marketplace”  |"
+            echo "| Open VSX            | $([ -n "$OVSX_PAT" ] && echo 'access token' || echo 'Trusted Publishing') |"
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -1,0 +1,452 @@
+{
+  "name": "p10-project-manager",
+  "displayName": "P10 Project Manager",
+  "description": "Save, organize and quickly switch between your projects. Zero dependencies.",
+  "version": "0.1.0",
+  "publisher": "p10node",
+  "author": {
+    "name": "Lptenoss",
+    "email": "pierreneter@gmail.com"
+  },
+  "license": "MIT",
+  "icon": "media/icon.png",
+  "galleryBanner": {
+    "color": "#312E81",
+    "theme": "dark"
+  },
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/p10node/vscode-prj-management"
+  },
+  "homepage": "https://github.com/p10node/vscode-prj-management#readme",
+  "bugs": {
+    "url": "https://github.com/p10node/vscode-prj-management/issues"
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "project",
+    "projects",
+    "workspace",
+    "switcher",
+    "favorites"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    },
+    "virtualWorkspaces": false
+  },
+  "scripts": {
+    "build": "bun build src/extension.ts --outdir out --target node --format cjs --external vscode --sourcemap=linked",
+    "watch": "bun build src/extension.ts --outdir out --target node --format cjs --external vscode --sourcemap=linked --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test src/test",
+    "vscode:prepublish": "bun run typecheck && bun run build",
+    "package": "bunx @vscode/vsce@4.1.0 package --no-dependencies"
+  },
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "p10-projects",
+          "title": "Projects",
+          "icon": "media/activity.svg"
+        }
+      ]
+    },
+    "views": {
+      "p10-projects": [
+        {
+          "id": "p10Saved",
+          "name": "Saved"
+        },
+        {
+          "id": "p10Detected",
+          "name": "Detected (Git)"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "p10Saved",
+        "contents": "No saved projects yet.\n[Save Current Project](command:p10.saveProject)"
+      },
+      {
+        "view": "p10Detected",
+        "contents": "No repositories detected. Add folders to scan in settings.\n[Open Settings](command:p10.openSettings)"
+      }
+    ],
+    "commands": [
+      {
+        "command": "p10.saveProject",
+        "title": "Save Project",
+        "category": "P10 Projects",
+        "icon": "$(save)"
+      },
+      {
+        "command": "p10.listProjects",
+        "title": "List Projects to Open",
+        "category": "P10 Projects"
+      },
+      {
+        "command": "p10.listProjectsNewWindow",
+        "title": "List Projects to Open in New Window",
+        "category": "P10 Projects"
+      },
+      {
+        "command": "p10.filterByTag",
+        "title": "Filter Projects by Tag",
+        "category": "P10 Projects",
+        "icon": "$(tag)"
+      },
+      {
+        "command": "p10.sortBy",
+        "title": "Sort Projects By…",
+        "category": "P10 Projects",
+        "icon": "$(sort-precedence)"
+      },
+      {
+        "command": "p10.editProjects",
+        "title": "Edit Projects (projects.json)",
+        "category": "P10 Projects",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "p10.refresh",
+        "title": "Refresh Projects",
+        "category": "P10 Projects",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "p10.openSettings",
+        "title": "Open Settings",
+        "category": "P10 Projects",
+        "icon": "$(settings-gear)"
+      },
+      {
+        "command": "p10.addToWorkspace",
+        "title": "Add Project to Workspace",
+        "category": "P10 Projects"
+      },
+      {
+        "command": "p10.viewAsTags",
+        "title": "View as Tags",
+        "category": "P10 Projects",
+        "icon": "$(list-tree)"
+      },
+      {
+        "command": "p10.viewAsList",
+        "title": "View as List",
+        "category": "P10 Projects",
+        "icon": "$(list-flat)"
+      },
+      {
+        "command": "p10.open",
+        "title": "Open Project",
+        "category": "P10 Projects",
+        "icon": "$(folder-opened)"
+      },
+      {
+        "command": "p10.openInNewWindow",
+        "title": "Open in New Window",
+        "category": "P10 Projects",
+        "icon": "$(multiple-windows)"
+      },
+      {
+        "command": "p10.openInCurrentWindow",
+        "title": "Open in Current Window",
+        "category": "P10 Projects",
+        "icon": "$(folder-opened)"
+      },
+      {
+        "command": "p10.rename",
+        "title": "Rename",
+        "category": "P10 Projects"
+      },
+      {
+        "command": "p10.editTags",
+        "title": "Edit Tags",
+        "category": "P10 Projects"
+      },
+      {
+        "command": "p10.delete",
+        "title": "Delete",
+        "category": "P10 Projects",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "p10.reveal",
+        "title": "Reveal in File Explorer",
+        "category": "P10 Projects"
+      },
+      {
+        "command": "p10.saveDetected",
+        "title": "Save to Projects",
+        "category": "P10 Projects",
+        "icon": "$(add)"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "p10.open",
+          "when": "false"
+        },
+        {
+          "command": "p10.openInNewWindow",
+          "when": "false"
+        },
+        {
+          "command": "p10.openInCurrentWindow",
+          "when": "false"
+        },
+        {
+          "command": "p10.rename",
+          "when": "false"
+        },
+        {
+          "command": "p10.editTags",
+          "when": "false"
+        },
+        {
+          "command": "p10.delete",
+          "when": "false"
+        },
+        {
+          "command": "p10.reveal",
+          "when": "false"
+        },
+        {
+          "command": "p10.saveDetected",
+          "when": "false"
+        },
+        {
+          "command": "p10.viewAsTags",
+          "when": "false"
+        },
+        {
+          "command": "p10.viewAsList",
+          "when": "false"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "p10.saveProject",
+          "when": "view == p10Saved",
+          "group": "navigation@1"
+        },
+        {
+          "command": "p10.filterByTag",
+          "when": "view == p10Saved",
+          "group": "navigation@2"
+        },
+        {
+          "command": "p10.sortBy",
+          "when": "view == p10Saved",
+          "group": "navigation@3"
+        },
+        {
+          "command": "p10.viewAsTags",
+          "when": "view == p10Saved && !p10.viewAsTags",
+          "group": "navigation@4"
+        },
+        {
+          "command": "p10.viewAsList",
+          "when": "view == p10Saved && p10.viewAsTags",
+          "group": "navigation@4"
+        },
+        {
+          "command": "p10.editProjects",
+          "when": "view == p10Saved",
+          "group": "navigation@5"
+        },
+        {
+          "command": "p10.refresh",
+          "when": "view == p10Detected",
+          "group": "navigation@1"
+        },
+        {
+          "command": "p10.openSettings",
+          "when": "view == p10Detected",
+          "group": "navigation@2"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "p10.openInCurrentWindow",
+          "when": "viewItem == project || viewItem == detected",
+          "group": "inline@1"
+        },
+        {
+          "command": "p10.openInNewWindow",
+          "when": "viewItem == project || viewItem == detected",
+          "group": "inline@2"
+        },
+        {
+          "command": "p10.saveDetected",
+          "when": "viewItem == detected",
+          "group": "inline@3"
+        },
+        {
+          "command": "p10.openInNewWindow",
+          "when": "viewItem == project || viewItem == detected",
+          "group": "1_open@1"
+        },
+        {
+          "command": "p10.openInCurrentWindow",
+          "when": "viewItem == project || viewItem == detected",
+          "group": "1_open@2"
+        },
+        {
+          "command": "p10.addToWorkspace",
+          "when": "viewItem == project || viewItem == detected",
+          "group": "1_open@3"
+        },
+        {
+          "command": "p10.rename",
+          "when": "viewItem == project",
+          "group": "2_edit@1"
+        },
+        {
+          "command": "p10.editTags",
+          "when": "viewItem == project",
+          "group": "2_edit@2"
+        },
+        {
+          "command": "p10.reveal",
+          "when": "viewItem == project || viewItem == detected",
+          "group": "3_misc@1"
+        },
+        {
+          "command": "p10.delete",
+          "when": "viewItem == project",
+          "group": "4_danger@1"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "p10.listProjects",
+        "key": "shift+alt+p",
+        "mac": "cmd+alt+p"
+      }
+    ],
+    "configuration": {
+      "title": "P10 Project Manager",
+      "properties": {
+        "p10.projectsLocation": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Folder that holds `projects.json`. Leave empty to use the extension's global storage. Supports `~`."
+        },
+        "p10.sortList": {
+          "type": "string",
+          "enum": [
+            "Name",
+            "NameDesc",
+            "Path",
+            "Saved",
+            "SavedDesc",
+            "Recent"
+          ],
+          "enumDescriptions": [
+            "Alphabetical by name (A → Z).",
+            "Reverse alphabetical by name (Z → A).",
+            "Alphabetical by folder path.",
+            "Saved order, oldest first (order in projects.json).",
+            "Saved order, newest first.",
+            "Most recently opened first."
+          ],
+          "default": "Name",
+          "markdownDescription": "How to sort the saved projects (sidebar and quick pick). Also changeable from the sort button in the *Saved* view title bar."
+        },
+        "p10.showStatusBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the current project name in the status bar."
+        },
+        "p10.openIn": {
+          "type": "string",
+          "enum": [
+            "newWindow",
+            "currentWindow"
+          ],
+          "enumDescriptions": [
+            "Open the project in a new window and leave the current one as is.",
+            "Replace the project open in the current window."
+          ],
+          "default": "newWindow",
+          "markdownDescription": "Where a project opens when picked from `List Projects to Open`, clicked in the sidebar, or picked after `Filter Projects by Tag`. On macOS, turn on `#window.nativeTabs#` to get new windows as tabs."
+        },
+        "p10.openInNewWindowWhenClickingInStatusBar": {
+          "type": "boolean",
+          "default": false,
+          "description": "Open the project list in a new window when clicking the status bar item."
+        },
+        "p10.openInCurrentWindowIfEmpty": {
+          "type": "boolean",
+          "default": true,
+          "description": "If the current window has no folder open, open the project there instead of a new window."
+        },
+        "p10.removeCurrentProjectFromList": {
+          "type": "boolean",
+          "default": false,
+          "description": "Hide the currently open project from the quick pick list."
+        },
+        "p10.checkInvalidPathsBeforeListing": {
+          "type": "boolean",
+          "default": true,
+          "description": "Hide projects whose folder no longer exists from the quick pick list."
+        },
+        "p10.filterOnFullPath": {
+          "type": "boolean",
+          "default": false,
+          "description": "Also match the full path when typing in the quick pick."
+        },
+        "p10.git.baseFolders": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "markdownDescription": "Folders to scan for Git repositories. Supports `~` and `${env:NAME}`."
+        },
+        "p10.git.ignoredFolders": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "node_modules",
+            "out",
+            "typings",
+            "test",
+            ".haxelib"
+          ],
+          "markdownDescription": "Folder names to skip while scanning. `*` wildcard is supported."
+        },
+        "p10.git.maxDepthRecursion": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 4,
+          "description": "How deep to look inside each base folder."
+        }
+      }
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.130",
+    "@types/vscode": "~1.80.0",
+    "typescript": "^7.0.2"
+  }
+}
