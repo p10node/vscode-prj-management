@@ -1,7 +1,7 @@
 {
   "name": "p10-project-manager",
   "displayName": "P10 Project Manager",
-  "description": "Save, organize and quickly switch between your projects. Zero dependencies.",
+  "description": "Save, tag, sort and quickly switch between projects from the sidebar, quick pick or status bar. Auto-detects Git repositories. Plain JSON storage, zero dependencies.",
   "version": "0.1.0",
   "publisher": "p10node",
   "author": {
@@ -23,6 +23,7 @@
   "bugs": {
     "url": "https://github.com/p10node/vscode-prj-management/issues"
   },
+  "qna": "https://github.com/p10node/vscode-prj-management/issues",
   "engines": {
     "vscode": "^1.80.0"
   },
@@ -30,11 +31,21 @@
     "Other"
   ],
   "keywords": [
+    "project manager",
+    "project switcher",
     "project",
     "projects",
     "workspace",
+    "workspaces",
+    "folders",
+    "switch",
     "switcher",
-    "favorites"
+    "favorites",
+    "bookmarks",
+    "tags",
+    "git",
+    "repositories",
+    "productivity"
   ],
   "main": "./out/extension.js",
   "activationEvents": [
