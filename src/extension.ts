@@ -22,6 +22,7 @@ let projectsFile = '';
 let viewAsTags = false;
 let statusBar: vscode.StatusBarItem | undefined;
 let providers: { saved: SavedProvider; detected: DetectedProvider } | undefined;
+let savedView: vscode.TreeView<unknown> | undefined;
 
 const cfg = () => vscode.workspace.getConfiguration('p10');
 const samePath = (a: string, b: string) => storage.normalizePath(a) === storage.normalizePath(b);
@@ -95,6 +96,8 @@ function refreshViews(): void {
     providers.saved.refresh();
     providers.detected.refresh();
   }
+  // Projects, not rows: one with two tags shows twice in the tag view but counts once.
+  if (savedView) savedView.title = `Saved (${sortedProjects().length})`;
   updateStatusBar();
 }
 
@@ -359,6 +362,7 @@ export function activate(context: vscode.ExtensionContext): void {
   const savedProvider = new SavedProvider(sortedProjects, isCurrent, () => viewAsTags);
   const detectedProvider = new DetectedProvider(unsavedDetected, isCurrent);
   providers = { saved: savedProvider, detected: detectedProvider };
+  savedView = vscode.window.createTreeView('p10Saved', { treeDataProvider: savedProvider });
 
   statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 0);
 
@@ -387,6 +391,8 @@ export function activate(context: vscode.ExtensionContext): void {
   reg('p10.addToWorkspace', addToWorkspace);
   reg('p10.viewAsTags', () => setViewMode(true));
   reg('p10.viewAsList', () => setViewMode(false));
+  reg('p10.expandAll', () => savedProvider.setTagsExpanded(true));
+  reg('p10.collapseAll', () => savedProvider.setTagsExpanded(false));
   reg('p10.open', (arg: ProjectArg) => openProject(arg, opensInNewWindow()));
   reg('p10.openInNewWindow', (arg: ProjectArg) => openProject(arg, true));
   reg('p10.openInCurrentWindow', (arg: ProjectArg) => openProject(arg, false));
@@ -412,7 +418,7 @@ export function activate(context: vscode.ExtensionContext): void {
 
   context.subscriptions.push(
     statusBar,
-    vscode.window.registerTreeDataProvider('p10Saved', savedProvider),
+    savedView,
     vscode.window.registerTreeDataProvider('p10Detected', detectedProvider),
     vscode.workspace.onDidChangeWorkspaceFolders(() => refreshViews()),
     vscode.workspace.onDidChangeConfiguration(async (e) => {

@@ -83,7 +83,8 @@
         },
         {
           "id": "p10Detected",
-          "name": "Detected (Git)"
+          "name": "Detected (Git)",
+          "visibility": "collapsed"
         }
       ]
     },
@@ -160,6 +161,18 @@
         "title": "View as List",
         "category": "P10 Projects",
         "icon": "$(list-flat)"
+      },
+      {
+        "command": "p10.expandAll",
+        "title": "Expand All",
+        "category": "P10 Projects",
+        "icon": "$(expand-all)"
+      },
+      {
+        "command": "p10.collapseAll",
+        "title": "Collapse All",
+        "category": "P10 Projects",
+        "icon": "$(collapse-all)"
       },
       {
         "command": "p10.open",
@@ -248,6 +261,14 @@
         {
           "command": "p10.viewAsList",
           "when": "false"
+        },
+        {
+          "command": "p10.expandAll",
+          "when": "false"
+        },
+        {
+          "command": "p10.collapseAll",
+          "when": "false"
         }
       ],
       "view/title": [
@@ -267,19 +288,29 @@
           "group": "navigation@3"
         },
         {
-          "command": "p10.viewAsTags",
-          "when": "view == p10Saved && !p10.viewAsTags",
-          "group": "navigation@4"
-        },
-        {
-          "command": "p10.viewAsList",
+          "command": "p10.expandAll",
           "when": "view == p10Saved && p10.viewAsTags",
           "group": "navigation@4"
         },
         {
+          "command": "p10.collapseAll",
+          "when": "view == p10Saved && p10.viewAsTags",
+          "group": "navigation@5"
+        },
+        {
+          "command": "p10.viewAsTags",
+          "when": "view == p10Saved && !p10.viewAsTags",
+          "group": "navigation@6"
+        },
+        {
+          "command": "p10.viewAsList",
+          "when": "view == p10Saved && p10.viewAsTags",
+          "group": "navigation@6"
+        },
+        {
           "command": "p10.editProjects",
           "when": "view == p10Saved",
-          "group": "navigation@5"
+          "group": "navigation@7"
         },
         {
           "command": "p10.refresh",

@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- *Saved* view title shows the number of saved projects, e.g. *Saved (12)*.
+- *Saved* view grouped by tag: *Expand All* and *Collapse All* buttons in the title bar.
+- *Detected (Git)* view starts collapsed. Existing installs keep the state they already have.
+
 ## 0.1.1
 
 - Store listing: fuller description and more search keywords; Q&A now points to GitHub issues.

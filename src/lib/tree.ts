@@ -24,9 +24,12 @@ export class ProjectItem extends vscode.TreeItem {
 export class TagItem extends vscode.TreeItem {
   readonly tag: string;
 
-  constructor(tag: string, count: number) {
-    super(tag, vscode.TreeItemCollapsibleState.Expanded);
+  /** @param epoch bumped by expand/collapse all: a row keeps its own open state for as long as its id lives */
+  constructor(tag: string, count: number, expanded: boolean, epoch: number) {
+    super(tag, expanded ? vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.Collapsed);
     this.tag = tag;
+    // The prefix keeps a tag apart from a project of the same name in list mode (rows without an id are keyed by label).
+    this.id = `tag:${epoch}:${tag}`;
     this.description = String(count);
     this.contextValue = 'tag';
     this.iconPath = new vscode.ThemeIcon('tag');
@@ -38,6 +41,8 @@ type SavedNode = ProjectItem | TagItem;
 export class SavedProvider implements vscode.TreeDataProvider<SavedNode> {
   private readonly emitter = new vscode.EventEmitter<void>();
   readonly onDidChangeTreeData = this.emitter.event;
+  private tagsExpanded = true;
+  private epoch = 0;
 
   /**
    * @param getProjects sorted projects
@@ -54,6 +59,13 @@ export class SavedProvider implements vscode.TreeDataProvider<SavedNode> {
     this.emitter.fire();
   }
 
+  /** Expand or collapse every tag at once. Tags that show up later start in the same state. */
+  setTagsExpanded(expanded: boolean): void {
+    this.tagsExpanded = expanded;
+    this.epoch++;
+    this.refresh();
+  }
+
   getTreeItem(el: SavedNode): vscode.TreeItem {
     return el;
   }
@@ -68,7 +80,7 @@ export class SavedProvider implements vscode.TreeDataProvider<SavedNode> {
         const tags = p.tags.length ? p.tags : [UNTAGGED];
         for (const t of tags) groups.set(t, (groups.get(t) || 0) + 1);
       }
-      return [...groups].sort(([a], [b]) => a.localeCompare(b)).map(([t, n]) => new TagItem(t, n));
+      return [...groups].sort(([a], [b]) => a.localeCompare(b)).map(([t, n]) => new TagItem(t, n, this.tagsExpanded, this.epoch));
     }
     if (el instanceof TagItem) {
       return projects
