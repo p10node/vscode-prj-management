@@ -1,8 +1,8 @@
 # P10 Project Manager
 
-[![Version](https://vsmarketplacebadges.dev/version-short/p10node.p10-project-manager.svg?label=VS%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=p10node.p10-project-manager)
-[![Installs](https://vsmarketplacebadges.dev/installs-short/p10node.p10-project-manager.svg)](https://marketplace.visualstudio.com/items?itemName=p10node.p10-project-manager)
-[![VS Marketplace downloads](https://vsmarketplacebadges.dev/downloads-short/p10node.p10-project-manager.svg?label=downloads)](https://marketplace.visualstudio.com/items?itemName=p10node.p10-project-manager)
+[![Version](https://vsmarketplacebadges.dev/version-short/p10node.p10-project-manager.png?label=VS%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=p10node.p10-project-manager)
+[![Installs](https://vsmarketplacebadges.dev/installs-short/p10node.p10-project-manager.png)](https://marketplace.visualstudio.com/items?itemName=p10node.p10-project-manager)
+[![VS Marketplace downloads](https://vsmarketplacebadges.dev/downloads-short/p10node.p10-project-manager.png?label=downloads)](https://marketplace.visualstudio.com/items?itemName=p10node.p10-project-manager)
 [![Open VSX downloads](https://img.shields.io/open-vsx/dt/p10node/p10-project-manager?label=Open%20VSX)](https://open-vsx.org/extension/p10node/p10-project-manager)
 [![Build](https://img.shields.io/github/actions/workflow/status/p10node/vscode-prj-management/publish.yml)](https://github.com/p10node/vscode-prj-management/actions/workflows/publish.yml)
 [![License](https://img.shields.io/github/license/p10node/vscode-prj-management)](LICENSE)
@@ -16,7 +16,7 @@ Independent implementation inspired by the idea of "Project Manager" extensions;
 - **Save Project**: store the current folder or `.code-workspace` under a name.
 - **Quick switch**: `Cmd+Alt+P` (`Shift+Alt+P` on Windows/Linux) lists projects; pick one to open it.
 - **Never clobbers the open project**: projects open in a new window by default (`p10.openIn`). To replace the current one, right-click → *Open in Current Window* or use the folder button in the sidebar. On macOS, VS Code's `window.nativeTabs` turns new windows into tabs.
-- **Sidebar** (activity bar → Projects): *Saved* (list or grouped by tag) and *Detected (Git)*.
+- **Sidebar** (activity bar → Projects): *Saved* (list or grouped by tag, with *Expand All* / *Collapse All* buttons for the tags) and *Detected (Git)* (collapsed until you open it).
 - **Tags**: right-click a project → *Edit Tags*; `Filter Projects by Tag` from the title bar.
 - **Sort**: the sort button in the *Saved* title bar (or `Sort Projects By…`) switches between Name (A→Z / Z→A), Path, Saved order (oldest / newest first) and Recently opened. Applies to the sidebar and the quick pick.
 - **Auto-detect repos**: set `p10.git.baseFolders` and repositories under them appear in *Detected*.
@@ -26,20 +26,20 @@ Independent implementation inspired by the idea of "Project Manager" extensions;
 
 ## Settings
 
-| Setting | Default | Purpose |
-|---|---|---|
-| `p10.projectsLocation` | `""` | Folder for `projects.json` (empty = extension global storage). Good for syncing via Dropbox/git. |
-| `p10.sortList` | `Name` | `Name` (A→Z), `NameDesc` (Z→A), `Path` (A→Z), `Saved` (oldest saved first), `SavedDesc` (newest saved first), `Recent` (last opened first) |
-| `p10.showStatusBar` | `true` | Show current project in status bar |
-| `p10.openIn` | `newWindow` | `newWindow` or `currentWindow`: where a picked/clicked project opens |
-| `p10.openInNewWindowWhenClickingInStatusBar` | `false` | |
-| `p10.openInCurrentWindowIfEmpty` | `true` | Reuse an empty window instead of opening another |
-| `p10.removeCurrentProjectFromList` | `false` | Hide the open project from the quick pick |
-| `p10.checkInvalidPathsBeforeListing` | `true` | Hide projects whose folder is gone |
-| `p10.filterOnFullPath` | `false` | Match the path while typing |
-| `p10.git.baseFolders` | `[]` | Folders to scan (`~` and `${env:NAME}` supported) |
-| `p10.git.ignoredFolders` | `node_modules, out, …` | Names to skip (`*` wildcard) |
-| `p10.git.maxDepthRecursion` | `4` | Scan depth |
+| Setting                                      | Default                | Purpose                                                                                                                                    |
+|----------------------------------------------|------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
+| `p10.projectsLocation`                       | `""`                   | Folder for `projects.json` (empty = extension global storage). Good for syncing via Dropbox/git.                                           |
+| `p10.sortList`                               | `Name`                 | `Name` (A→Z), `NameDesc` (Z→A), `Path` (A→Z), `Saved` (oldest saved first), `SavedDesc` (newest saved first), `Recent` (last opened first) |
+| `p10.showStatusBar`                          | `true`                 | Show current project in status bar                                                                                                         |
+| `p10.openIn`                                 | `newWindow`            | `newWindow` or `currentWindow`: where a picked/clicked project opens                                                                       |
+| `p10.openInNewWindowWhenClickingInStatusBar` | `false`                |                                                                                                                                            |
+| `p10.openInCurrentWindowIfEmpty`             | `true`                 | Reuse an empty window instead of opening another                                                                                           |
+| `p10.removeCurrentProjectFromList`           | `false`                | Hide the open project from the quick pick                                                                                                  |
+| `p10.checkInvalidPathsBeforeListing`         | `true`                 | Hide projects whose folder is gone                                                                                                         |
+| `p10.filterOnFullPath`                       | `false`                | Match the path while typing                                                                                                                |
+| `p10.git.baseFolders`                        | `[]`                   | Folders to scan (`~` and `${env:NAME}` supported)                                                                                          |
+| `p10.git.ignoredFolders`                     | `node_modules, out, …` | Names to skip (`*` wildcard)                                                                                                               |
+| `p10.git.maxDepthRecursion`                  | `4`                    | Scan depth                                                                                                                                 |
 
 ## `projects.json`
 
