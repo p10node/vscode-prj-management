@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.2.0
 
 - *Saved* view title shows the number of saved projects, e.g. *Saved (12)*.
 - *Saved* view grouped by tag: *Expand All* and *Collapse All* buttons in the title bar.
