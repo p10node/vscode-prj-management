@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.1
+
+- Maintenance release: the release workflow now uses GitHub Actions that run on Node 24. No changes to the extension itself.
+
 ## 0.2.0
 
 - *Saved* view title shows the number of saved projects, e.g. *Saved (12)*.
